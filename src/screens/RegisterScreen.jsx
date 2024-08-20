@@ -74,7 +74,6 @@ const Signup = ({ onRegister }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registro de Usuario</Text>
-      {step === 1 && (
         <View style={styles.stepContainer}>
           <FormGroup
             id="name"
@@ -96,14 +95,6 @@ const Signup = ({ onRegister }) => {
             }}
             errors={errors}
           />
-          <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.buttonText}>Continuar</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {step === 2 && (
-        <View style={styles.stepContainer}>
           <FormGroup
             id="password"
             label="Contraseña"
@@ -131,27 +122,9 @@ const Signup = ({ onRegister }) => {
             secureTextEntry
           />
           <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.buttonText}>Registrar</Text>
+            <Text style={styles.buttonText}>Registrarse</Text>
           </TouchableOpacity>
         </View>
-      )}
-
-      {showDialog && (
-        <View style={styles.dialogOverlay}>
-          <View style={styles.dialogContent}>
-            <Text style={styles.dialogTitle}>Mantener sesión</Text>
-            <Text>¿Desea mantener la sesión iniciada?</Text>
-            <View style={styles.dialogActions}>
-              <TouchableOpacity style={styles.dialogButton} onPress={() => handleKeepSession(true)}>
-                <Text style={styles.dialogButtonText}>Sí</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.dialogButton} onPress={() => handleKeepSession(false)}>
-                <Text style={styles.dialogButtonText}>No</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </View>
-      )}
     </View>
   );
 };
@@ -160,6 +133,8 @@ const Signup = ({ onRegister }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 16,
     backgroundColor: '#fff',
   },
@@ -173,6 +148,7 @@ const styles = StyleSheet.create({
   },
   formGroup: {
     marginBottom: 16,
+    width: 300,
   },
   label: {
     fontSize: 16,

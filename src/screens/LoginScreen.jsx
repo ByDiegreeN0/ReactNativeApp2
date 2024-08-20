@@ -92,17 +92,6 @@ const Signin = ({ onLogin }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.welcome}>
-        <Text style={styles.title}>Bienvenido</Text>
-        <Text style={styles.text}>
-          Bienvenidos al acortador de links TinyFy. Si ya tienes una cuenta, inicia sesión para continuar. Si no tienes una cuenta, crea una para comenzar.
-        </Text>
-        <TouchableOpacity onPress={() => {/* Navegar a Signup */}}>
-          <Text style={styles.redirectText}>
-            ¿No tienes cuenta? <Text style={styles.link}>Regístrate</Text>
-          </Text>
-        </TouchableOpacity>
-      </View>
       <View style={styles.formContainer}>
         <Text style={styles.title}>Inicio de Sesión</Text>
         <FormGroup
@@ -151,6 +140,8 @@ Signin.propTypes = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 16,
     backgroundColor: '#fff',
   },
@@ -178,6 +169,7 @@ const styles = StyleSheet.create({
   },
   formGroup: {
     marginBottom: 16,
+    width: 300,
   },
   label: {
     fontSize: 16,
