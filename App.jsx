@@ -5,8 +5,6 @@ import MyStack from './src/components/StackNavigation';
 
 export default function App() {
   return (
-
-
     <NavigationContainer>
       <MyStack />
     </NavigationContainer>
