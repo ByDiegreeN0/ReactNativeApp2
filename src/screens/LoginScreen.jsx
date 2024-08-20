@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useForm, Controller } from 'react-hook-form';
-import { View, Text, TextInput, TouchableOpacity, Modal, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const FormGroup = ({ id, label, control, rules, errors }) => (
@@ -35,29 +35,6 @@ FormGroup.propTypes = {
   errors: PropTypes.object.isRequired,
 };
 
-const CustomDialog = ({ visible, onClose, onConfirm }) => (
-  <Modal
-    transparent={true}
-    visible={visible}
-    onRequestClose={onClose}
-  >
-    <View style={styles.dialogOverlay}>
-      <View style={styles.dialogContent}>
-        <Text style={styles.dialogTitle}>Mantener sesión</Text>
-        <Text style={styles.dialogText}>¿Desea mantener la sesión iniciada?</Text>
-        <View style={styles.dialogActions}>
-          <TouchableOpacity style={styles.button} onPress={() => onConfirm(true)}>
-            <Text style={styles.buttonText}>Sí</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={() => onConfirm(false)}>
-            <Text style={styles.buttonText}>No</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  </Modal>
-);
-
 const Signin = ({ onLogin }) => {
   const {
     control,
@@ -68,7 +45,6 @@ const Signin = ({ onLogin }) => {
 
   const onSubmit = async (data) => {
     console.log(data);
-    // En una aplicación real, aquí harías una llamada a tu API de autenticación
     setShowDialog(true);
   };
 
@@ -77,14 +53,10 @@ const Signin = ({ onLogin }) => {
       if (keep) {
         await AsyncStorage.setItem('isAuthenticated', 'true');
       } else {
-        // Solo almacenar en la sesión actual, la lógica exacta puede variar
-        // En React Native, esta lógica puede no ser necesaria, ya que AsyncStorage persiste datos
         await AsyncStorage.setItem('isAuthenticated', 'true');
       }
       setShowDialog(false);
       onLogin();
-      // Navegar a otra pantalla (usar navegación de React Navigation)
-      // navigation.navigate('DashboardLinks');
     } catch (error) {
       console.error('Error storing authentication status:', error);
     }
@@ -123,6 +95,9 @@ const Signin = ({ onLogin }) => {
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonText}>Iniciar Sesión</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity style={styles.redired}>Ya Tienes Cuenta?</TouchableOpacity>
+        
       </View>
       <CustomDialog 
         visible={showDialog}
@@ -201,32 +176,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
-  dialogOverlay: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.5)',
-  },
-  dialogContent: {
-    backgroundColor: '#fff',
-    padding: 24,
-    borderRadius: 4,
-    width: '80%',
-    alignItems: 'center',
-  },
-  dialogTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  dialogText: {
-    fontSize: 16,
-    marginBottom: 16,
-  },
-  dialogActions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '100%',
+  redired: {
+    textAlign: "center",
+    color: "#007bff",
+    margin: 10,
   },
 });
 
