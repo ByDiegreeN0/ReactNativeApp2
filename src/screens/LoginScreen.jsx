@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { useForm, Controller } from 'react-hook-form';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useForm, Controller } from 'react-hook-form';
+import { useNavigation } from '@react-navigation/native';
 
 const FormGroup = ({ id, label, control, rules, errors }) => (
   <View style={styles.formGroup}>
@@ -27,38 +27,22 @@ const FormGroup = ({ id, label, control, rules, errors }) => (
   </View>
 );
 
-FormGroup.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  control: PropTypes.object.isRequired,
-  rules: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
-};
-
-const Signin = ({ onLogin }) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const [showDialog, setShowDialog] = useState(false);
+const Signin = () => {
+  const { control, handleSubmit, formState: { errors } } = useForm();
+  const navigation = useNavigation();
 
   const onSubmit = async (data) => {
-    console.log(data);
-    setShowDialog(true);
-  };
-
-  const handleKeepSession = async (keep) => {
     try {
-      if (keep) {
-        await AsyncStorage.setItem('isAuthenticated', 'true');
+      const storedEmail = await AsyncStorage.getItem('email');
+      const storedPassword = await AsyncStorage.getItem('password');
+
+      if (data.email === storedEmail && data.password === storedPassword) {
+        navigation.navigate('DashboardScreen'); // Redirige al DashboardScreen
       } else {
-        await AsyncStorage.setItem('isAuthenticated', 'true');
+        Alert.alert('Error', 'Correo electrónico o contraseña incorrectos');
       }
-      setShowDialog(false);
-      onLogin();
     } catch (error) {
-      console.error('Error storing authentication status:', error);
+      console.error('Error retrieving data:', error);
     }
   };
 
@@ -96,20 +80,15 @@ const Signin = ({ onLogin }) => {
           <Text style={styles.buttonText}>Iniciar Sesión</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.redired}>Ya Tienes Cuenta?</TouchableOpacity>
-        
+        <TouchableOpacity 
+          style={styles.redirect} 
+          onPress={() => navigation.navigate('RegisterScreen')} // Redirige al RegisterScreen
+        >
+          <Text style={styles.textRedirect}>No Tienes Cuenta?</Text>
+        </TouchableOpacity>
       </View>
-      <CustomDialog 
-        visible={showDialog}
-        onClose={() => setShowDialog(false)}
-        onConfirm={handleKeepSession}
-      />
     </View>
   );
-};
-
-Signin.propTypes = {
-  onLogin: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
@@ -120,24 +99,10 @@ const styles = StyleSheet.create({
     padding: 16,
     backgroundColor: '#fff',
   },
-  welcome: {
-    marginBottom: 24,
-  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 8,
-  },
-  text: {
-    fontSize: 16,
-    marginBottom: 16,
-  },
-  redirectText: {
-    fontSize: 16,
-    color: '#007bff',
-  },
-  link: {
-    fontWeight: 'bold',
   },
   formContainer: {
     marginTop: 24,
@@ -176,7 +141,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
-  redired: {
+  redirect: {
+    width: '100%'
+  },
+  textRedirect: {
     textAlign: "center",
     color: "#007bff",
     margin: 10,
