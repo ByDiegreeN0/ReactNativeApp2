@@ -1,13 +1,13 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
-import Login from "./src/screens/RegisterScreen"; 
+import { NavigationContainer } from '@react-navigation/native';
+import MyStack from './src/components/StackNavigation';
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Login /> 
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
   );
 }
 
