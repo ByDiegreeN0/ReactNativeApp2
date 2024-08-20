@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const FormGroup = ({ id, label, control, rules, errors, secureTextEntry = false }) => (
   <View style={styles.formGroup}>
@@ -25,11 +26,11 @@ const FormGroup = ({ id, label, control, rules, errors, secureTextEntry = false 
   </View>
 );
 
-const Signup = ({ navigation }) => {
+const Signup = () => {
   const { control, handleSubmit, formState: { errors }, watch, trigger } = useForm();
   const [step, setStep] = useState(1);
-  const [showDialog, setShowDialog] = useState(false);
   const password = watch("password");
+  const navigation = useNavigation();
 
   const onSubmit = async (data) => {
     if (step === 1) {
@@ -43,7 +44,7 @@ const Signup = ({ navigation }) => {
           await AsyncStorage.setItem('userEmail', data.email);
           await AsyncStorage.setItem('userPassword', data.password);
           Alert.alert('Registro exitoso', 'Puedes iniciar sesión ahora');
-          navigation.navigate('Signin'); // Redirige a la pantalla de inicio de sesión
+          navigation.navigate('Login'); // Redirige a la pantalla de inicio de sesión
         } catch (error) {
           console.error('Error storing registration data:', error);
         }
@@ -109,12 +110,14 @@ const Signup = ({ navigation }) => {
             />
           </>
         )}
+
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonText}>Registrarse</Text>
         </TouchableOpacity>
-        <TouchableOpacity 
-          style={styles.redirect} 
-          onPress={() => navigation.navigate('Signin')} 
+
+        <TouchableOpacity
+          style={styles.redirect}
+          onPress={() => navigation.navigate('Login')}
         >
           <Text style={styles.textRedirect}>Ya Tienes Cuenta?</Text>
         </TouchableOpacity>
