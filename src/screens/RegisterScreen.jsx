@@ -3,7 +3,6 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'reac
 import { useForm, Controller } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Componente para el formulario
 const FormGroup = ({ id, label, control, rules, errors, secureTextEntry = false }) => (
   <View style={styles.formGroup}>
     <Text style={styles.label}>{label}</Text>
@@ -25,8 +24,6 @@ const FormGroup = ({ id, label, control, rules, errors, secureTextEntry = false 
     {errors[id] && <Text style={styles.errorMessage}>{errors[id].message}</Text>}
   </View>
 );
-
-// Componente principal de registro
 const Signup = ({ onRegister }) => {
   const {
     control,
@@ -65,7 +62,6 @@ const Signup = ({ onRegister }) => {
         await AsyncStorage.setItem('session', 'session');
       }
       setShowDialog(false);
-      // Navigate to another screen or handle post-registration logic
     } catch (error) {
       console.error('Error handling session storage:', error);
     }
@@ -124,6 +120,7 @@ const Signup = ({ onRegister }) => {
           <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
             <Text style={styles.buttonText}>Registrarse</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.redired}>Ya Tienes Cuenta?</TouchableOpacity>
         </View>
     </View>
   );
@@ -178,41 +175,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
-  dialogOverlay: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  dialogContent: {
-    width: 300,
-    padding: 16,
-    backgroundColor: '#fff',
-    borderRadius: 8,
-    alignItems: 'center',
-  },
-  dialogTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  dialogActions: {
-    flexDirection: 'row',
-    marginTop: 16,
-  },
-  dialogButton: {
-    backgroundColor: '#007bff',
-    padding: 10,
-    borderRadius: 4,
-    margin: 5,
-  },
-  dialogButtonText: {
-    color: '#fff',
-    fontSize: 16,
+  redired: {
+    textAlign: "center",
+    color: "#007bff",
+    margin: 10,
   },
 });
 
