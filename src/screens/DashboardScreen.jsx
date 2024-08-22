@@ -61,13 +61,12 @@ const Dashboard = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003554', // Color de fondo de la paleta
     padding: 10,
     justifyContent: 'space-between', // Espacio entre el contenido y el botón de cerrar sesión
   },
   header: {
     height: 60,
-    backgroundColor: '#0582ca', // Color del header
+    backgroundColor: '#C9184A', // Color del header
     justifyContent: 'center', // Centra verticalmente el contenido del header
     alignItems: 'center',
     flexDirection: 'row',
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
   box: {
     width: 160, // Ancho fijo para los botones
     height: 140, // Altura mayor para dar espacio a los iconos y texto
-    backgroundColor: '#00a6fb', // Color de los botones
+    backgroundColor: '#A4133C', // Color de los botones
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
@@ -115,7 +114,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   logoutButton: {
-    backgroundColor: '#051923', // Color del botón de cerrar sesión
+    backgroundColor: '#C9184A', // Color del botón de cerrar sesión
     paddingVertical: 15,
     alignItems: 'center',
     borderRadius: 5,

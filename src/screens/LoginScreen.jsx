@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#C9184A',
     padding: 12,
     borderRadius: 4,
     alignItems: 'center',
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
   },
   textRedirect: {
     textAlign: "center",
-    color: "#007bff",
+    color: "#FF4D6D",
     margin: 10,
   },
 });

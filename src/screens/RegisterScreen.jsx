@@ -166,10 +166,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#C9184A',
     padding: 12,
     borderRadius: 4,
     alignItems: 'center',
+    marginVertical: 8,
   },
   buttonText: {
     color: '#fff',
@@ -177,10 +178,11 @@ const styles = StyleSheet.create({
   },
   redirect: {
     marginTop: 16,
+
   },
   textRedirect: {
     textAlign: "center",
-    color: "#007bff",
+    color: "#FF4D6D",
     margin: 10,
   },
 });
