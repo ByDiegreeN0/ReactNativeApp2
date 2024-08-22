@@ -44,7 +44,7 @@ const Signup = () => {
           await AsyncStorage.setItem('userEmail', data.email);
           await AsyncStorage.setItem('userPassword', data.password);
           Alert.alert('Registro exitoso', 'Puedes iniciar sesión ahora');
-          navigation.navigate('Login'); // Redirige a la pantalla de inicio de sesión
+          navigation.navigate('Profile');
         } catch (error) {
           console.error('Error storing registration data:', error);
         }

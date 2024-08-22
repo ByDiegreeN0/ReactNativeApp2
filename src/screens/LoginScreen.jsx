@@ -1,10 +1,10 @@
-import React from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
-const FormGroup = ({ id, label, control, rules, errors }) => (
+const FormGroup = ({ id, label, control, rules, errors, secureTextEntry = false }) => (
   <View style={styles.formGroup}>
     <Text style={styles.label}>{label}</Text>
     <Controller
@@ -17,9 +17,8 @@ const FormGroup = ({ id, label, control, rules, errors }) => (
           onBlur={onBlur}
           onChangeText={onChange}
           value={value}
-          secureTextEntry={id === 'password'}
-          keyboardType={id === 'email' ? 'email-address' : 'default'}
           placeholder={label}
+          secureTextEntry={secureTextEntry}
         />
       )}
     />
@@ -29,27 +28,30 @@ const FormGroup = ({ id, label, control, rules, errors }) => (
 
 const Signin = () => {
   const { control, handleSubmit, formState: { errors } } = useForm();
+  const [loginError, setLoginError] = useState(''); // Estado para el error de login
   const navigation = useNavigation();
 
   const onSubmit = async (data) => {
     try {
-      const storedEmail = await AsyncStorage.getItem('email');
-      const storedPassword = await AsyncStorage.getItem('password');
+      const storedEmail = await AsyncStorage.getItem('userEmail');
+      const storedPassword = await AsyncStorage.getItem('userPassword');
 
       if (data.email === storedEmail && data.password === storedPassword) {
-        navigation.navigate('DashboardScreen'); // Redirige al DashboardScreen
+        setLoginError(''); // Limpiar error si es correcto
+        navigation.navigate('Profile');
       } else {
-        Alert.alert('Error', 'Correo electrónico o contraseña incorrectos');
+        setLoginError('Correo electrónico o contraseña incorrectos'); // Establecer mensaje de error
       }
     } catch (error) {
       console.error('Error retrieving data:', error);
+      setLoginError('Hubo un problema al intentar iniciar sesión'); // Establecer mensaje de error general
     }
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Inicio de Sesión</Text>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Inicio de Sesión</Text>
         <FormGroup
           id="email"
           label="Correo Electrónico"
@@ -75,22 +77,28 @@ const Signin = () => {
             },
           }}
           errors={errors}
+          secureTextEntry
         />
+        
+        {/* Mostrar mensaje de error de login si existe */}
+        {loginError ? <Text style={styles.errorMessage}>{loginError}</Text> : null}
+
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
           <Text style={styles.buttonText}>Iniciar Sesión</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity 
-          style={styles.redirect} 
-          onPress={() => navigation.navigate('RegisterScreen')} // Redirige al RegisterScreen
+        <TouchableOpacity
+          style={styles.redirect}
+          onPress={() => navigation.navigate('Register')}
         >
-          <Text style={styles.textRedirect}>No Tienes Cuenta?</Text>
+          <Text style={styles.textRedirect}>¿No tienes cuenta?</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
+// Estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -102,7 +110,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 8,
+    marginBottom: 16,
   },
   formContainer: {
     marginTop: 24,
@@ -113,7 +121,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16,
-    marginBottom: 8,
+    fontWeight: 'bold',
   },
   input: {
     height: 40,
@@ -142,7 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   redirect: {
-    width: '100%'
+    marginTop: 16,
   },
   textRedirect: {
     textAlign: "center",
