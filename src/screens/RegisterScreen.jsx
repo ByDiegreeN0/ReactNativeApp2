@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const FormGroup = ({ id, label, control, rules, errors, secureTextEntry = false }) => (
   <View style={styles.formGroup}>
@@ -24,17 +25,12 @@ const FormGroup = ({ id, label, control, rules, errors, secureTextEntry = false 
     {errors[id] && <Text style={styles.errorMessage}>{errors[id].message}</Text>}
   </View>
 );
-const Signup = ({ onRegister }) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    trigger,
-  } = useForm();
+
+const Signup = () => {
+  const { control, handleSubmit, formState: { errors }, watch, trigger } = useForm();
   const [step, setStep] = useState(1);
-  const [showDialog, setShowDialog] = useState(false);
   const password = watch("password");
+  const navigation = useNavigation();
 
   const onSubmit = async (data) => {
     if (step === 1) {
@@ -44,84 +40,88 @@ const Signup = ({ onRegister }) => {
       const isValid = await trigger(["password", "passwordConfirm"]);
       if (isValid) {
         try {
-          await AsyncStorage.setItem('isAuthenticated', 'true');
-          onRegister();
-          setShowDialog(true);
+          await AsyncStorage.setItem('userName', data.name);
+          await AsyncStorage.setItem('userEmail', data.email);
+          await AsyncStorage.setItem('userPassword', data.password);
+          Alert.alert('Registro exitoso', 'Puedes iniciar sesión ahora');
+          navigation.navigate('Profile');
         } catch (error) {
-          console.error('Error storing authentication status:', error);
+          console.error('Error storing registration data:', error);
         }
       }
-    }
-  };
-
-  const handleKeepSession = async (keep) => {
-    try {
-      if (keep) {
-        await AsyncStorage.setItem('session', 'local');
-      } else {
-        await AsyncStorage.setItem('session', 'session');
-      }
-      setShowDialog(false);
-    } catch (error) {
-      console.error('Error handling session storage:', error);
     }
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Registro de Usuario</Text>
-        <View style={styles.stepContainer}>
-          <FormGroup
-            id="name"
-            label="Nombre"
-            control={control}
-            rules={{ required: "El nombre es obligatorio" }}
-            errors={errors}
-          />
-          <FormGroup
-            id="email"
-            label="Correo Electrónico"
-            control={control}
-            rules={{
-              required: "El correo electrónico es obligatorio",
-              pattern: {
-                value: /^[^@ ]+@[^@ ]+\.[^@.]{2,}$/,
-                message: "El correo electrónico no es válido",
-              },
-            }}
-            errors={errors}
-          />
-          <FormGroup
-            id="password"
-            label="Contraseña"
-            control={control}
-            rules={{
-              required: "La contraseña es obligatoria",
-              minLength: {
-                value: 6,
-                message: "La contraseña debe tener al menos 6 caracteres",
-              },
-            }}
-            errors={errors}
-            secureTextEntry
-          />
-          <FormGroup
-            id="passwordConfirm"
-            label="Confirmar Contraseña"
-            control={control}
-            rules={{
-              required: "La confirmación de la contraseña es obligatoria",
-              validate: (value) =>
-                value === password || "Las contraseñas no coinciden",
-            }}
-            errors={errors}
-            secureTextEntry
-          />
-          <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
-            <Text style={styles.buttonText}>Registrarse</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.redired}>Ya Tienes Cuenta?</TouchableOpacity>
-        </View>
+      <View style={styles.stepContainer}>
+        {step === 1 && (
+          <>
+            <FormGroup
+              id="name"
+              label="Nombre"
+              control={control}
+              rules={{ required: "El nombre es obligatorio" }}
+              errors={errors}
+            />
+            <FormGroup
+              id="email"
+              label="Correo Electrónico"
+              control={control}
+              rules={{
+                required: "El correo electrónico es obligatorio",
+                pattern: {
+                  value: /^[^@ ]+@[^@ ]+\.[^@.]{2,}$/,
+                  message: "El correo electrónico no es válido",
+                },
+              }}
+              errors={errors}
+            />
+          </>
+        )}
+        {step === 2 && (
+          <>
+            <FormGroup
+              id="password"
+              label="Contraseña"
+              control={control}
+              rules={{
+                required: "La contraseña es obligatoria",
+                minLength: {
+                  value: 6,
+                  message: "La contraseña debe tener al menos 6 caracteres",
+                },
+              }}
+              errors={errors}
+              secureTextEntry
+            />
+            <FormGroup
+              id="passwordConfirm"
+              label="Confirmar Contraseña"
+              control={control}
+              rules={{
+                required: "La confirmación de la contraseña es obligatoria",
+                validate: (value) =>
+                  value === password || "Las contraseñas no coinciden",
+              }}
+              errors={errors}
+              secureTextEntry
+            />
+          </>
+        )}
+
+        <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
+          <Text style={styles.buttonText}>Registrarse</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.redirect}
+          onPress={() => navigation.navigate('Login')}
+        >
+          <Text style={styles.textRedirect}>Ya Tienes Cuenta?</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -175,7 +175,10 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 16,
   },
-  redired: {
+  redirect: {
+    marginTop: 16,
+  },
+  textRedirect: {
     textAlign: "center",
     color: "#007bff",
     margin: 10,

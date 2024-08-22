@@ -11,8 +11,8 @@ const Stack = createStackNavigator();
 function MyStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={RegisScreen} />
-      <Stack.Screen name="Notifications" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Profile" component={DashboardScreen} />
       <Stack.Screen name="Videos" component={VideoScreen} />
       <Stack.Screen name="Images" component={ImagesScreen} />
