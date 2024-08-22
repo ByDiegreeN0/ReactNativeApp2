@@ -1,15 +1,15 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; 
+import { useNavigation } from '@react-navigation/native';
+
 
 const Dashboard = () => {
 
+  const navigation = useNavigation();
+
   const handleHeaderPress = () => {
     alert('Perfil de Usuario presionado');
-  };
-
-  const handleLogout = () => {
-    alert('Cerrar Sesión presionado');
   };
 
   return (
@@ -26,12 +26,12 @@ const Dashboard = () => {
       {/* Contenedor para las filas de botones */}
       <View style={styles.buttonWrapper}>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.box} onPress={() => alert('Galería de Videos')}>
+          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Videos')}>
             <Icon name="videocam" size={40} color="#fff" style={styles.icon} />
             <Text style={styles.text}>Galería de Videos</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.box} onPress={() => alert('Galería de Imágenes')}>
+          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Images')}>
             <Icon name="photo-library" size={40} color="#fff" style={styles.icon} />
             <Text style={styles.text}>Galería de Imágenes</Text>
           </TouchableOpacity>
@@ -43,7 +43,7 @@ const Dashboard = () => {
             <Text style={styles.text}>Galería de Audios</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.box} onPress={() => alert('Otra Sección')}>
+          <TouchableOpacity style={styles.box} onPress={() => alert('Otra Seccion')}>
             <Icon name="apps" size={40} color="#fff" style={styles.icon} />
             <Text style={styles.text}>Otra Sección</Text>
           </TouchableOpacity>
@@ -51,7 +51,7 @@ const Dashboard = () => {
       </View>
 
       {/* Botón de Cerrar Sesión */}
-      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+      <TouchableOpacity style={styles.logoutButton}  onPress={() => navigation.navigate('Login')}>
         <Text style={styles.logoutText}>Cerrar Sesión</Text>
       </TouchableOpacity>
     </View>
