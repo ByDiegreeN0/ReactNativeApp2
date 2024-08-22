@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     heading: {
         color: "#007bff",
         fontSize: 30,
-        textAlign: "center",
+    
         fontWeight: "bold",
     },
     imageContainer: {
