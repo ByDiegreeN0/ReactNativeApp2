@@ -14,6 +14,7 @@ const Dashboard = () => {
 
   return (
     <View style={styles.container}>
+      {/* Encabezado de perfil de usuario */}
       <TouchableOpacity style={styles.header} onPress={handleHeaderPress}>
         <Icon name="person" size={30} color="#fff" />
         <Text style={styles.headerText}>Perfil de Usuario</Text>
@@ -26,24 +27,24 @@ const Dashboard = () => {
       <View style={styles.buttonWrapper}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.box} onPress={() => alert('Galería de Videos')}>
-            <Icon name="videocam" size={40} color="#fff" />
+            <Icon name="videocam" size={40} color="#fff" style={styles.icon} />
             <Text style={styles.text}>Galería de Videos</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.box} onPress={() => alert('Galería de Imágenes')}>
-            <Icon name="photo-library" size={40} color="#fff" />
+            <Icon name="photo-library" size={40} color="#fff" style={styles.icon} />
             <Text style={styles.text}>Galería de Imágenes</Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.box} onPress={() => alert('Galería de Audios')}>
-            <Icon name="audiotrack" size={40} color="#fff" />
+            <Icon name="audiotrack" size={40} color="#fff" style={styles.icon} />
             <Text style={styles.text}>Galería de Audios</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.box} onPress={() => alert('Otra Sección')}>
-            <Icon name="apps" size={40} color="#fff" />
+            <Icon name="apps" size={40} color="#fff" style={styles.icon} />
             <Text style={styles.text}>Otra Sección</Text>
           </TouchableOpacity>
         </View>
@@ -67,9 +68,12 @@ const styles = StyleSheet.create({
   header: {
     height: 60,
     backgroundColor: '#0582ca', // Color del header
-    justifyContent: 'flex-start',
+    justifyContent: 'center', // Centra verticalmente el contenido del header
     alignItems: 'center',
     flexDirection: 'row',
+    borderRadius: 5,
+    elevation: 3, // Sombra para el encabezado
+    marginBottom: 10,
     paddingHorizontal: 15,
   },
   headerText: {
@@ -93,19 +97,22 @@ const styles = StyleSheet.create({
   },
   box: {
     width: 160, // Ancho fijo para los botones
-    height: 100,
+    height: 140, // Altura mayor para dar espacio a los iconos y texto
     backgroundColor: '#00a6fb', // Color de los botones
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: 'column', // Alinea icono y texto verticalmente
     margin: 5,
+    padding: 10,
+  },
+  icon: {
+    marginBottom: 10, // Espacio entre el icono y el texto
   },
   text: {
     color: '#fff',
     fontSize: 18,
-    marginLeft: 10,
+    textAlign: 'center',
   },
   logoutButton: {
     backgroundColor: '#051923', // Color del botón de cerrar sesión
