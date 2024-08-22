@@ -4,37 +4,39 @@ import {
     FlatList,
     Modal,
     Pressable,
-    ScrollView,
     StyleSheet,
     Text,
     View,
 } from "react-native";
-
 import * as MediaLibrary from "expo-media-library";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Image } from "expo-image";
 import { Video, ResizeMode } from "expo-av";
 
-export default function VideoScreen() {
-
+export default function App() {
     const [galleryFiles, setGalleryFiles] = useState([]);
     const [currentImage, setCurrentImage] = useState("");
-    const [mediaType, setMediaType] = useState("image");
-    const fetchMedia = async (first, mediaType) => {
+    const [mediaType, setMediaType] = useState("video");
 
+    useEffect(() => {
+        fetchMedia(0, mediaType);
+    }, [mediaType]);
+
+    const fetchMedia = async (first, mediaType) => {
         const { status } = await MediaLibrary.requestPermissionsAsync();
         if (status === "granted") {
             const media = await MediaLibrary.getAssetsAsync({
                 first: first + 30,
                 sortBy: MediaLibrary.SortBy.creationTime,
                 mediaType:
-                    mediaType === "image"
-                        ? MediaLibrary.MediaType.photo
-                        : MediaLibrary.MediaType.video,
+                    mediaType === "video"
+                        ? MediaLibrary.MediaType.video
+                        : MediaLibrary.MediaType.image,
             });
             setGalleryFiles(media.assets);
         }
     };
+
     const renderItem = ({ item }) => (
         <View style={styles.imageContainer}>
             <Pressable
@@ -43,10 +45,17 @@ export default function VideoScreen() {
                     setMediaType(item.mediaType);
                 }}
             >
-                <Image
-                    source={{ uri: item.uri }}
-                    style={{ width: 200, height: 200 }}
-                />  
+                {item.mediaType === "video" ? (
+                    <Image
+                        source={{ uri: item.uri }}
+                        style={{ width: 200, height: 200 }}
+                    />
+                ) : (
+                    <Image
+                        source={{ uri: item.uri }}
+                        style={{ width: 200, height: 200 }}
+                    />
+                )}
             </Pressable>
         </View>
     );
@@ -54,7 +63,7 @@ export default function VideoScreen() {
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
-            <Text style={styles.heading}>Galeria de Videos</Text>
+            <Text style={styles.heading}>Galería de Videos</Text>
 
             <View
                 style={{
@@ -64,12 +73,12 @@ export default function VideoScreen() {
                     padding: 10,
                 }}
             >
-                
+
             </View>
 
             {/* view full image in modal */}
             <Modal visible={currentImage !== ""} transparent={false}>
-                <View style={{ flex: 1, backgroundColor: 0 }}>
+                <View style={{ flex: 1, backgroundColor: "black" }}>
                     <Pressable
                         style={{
                             position: "absolute",
@@ -83,10 +92,10 @@ export default function VideoScreen() {
                     >
                         <Text
                             style={{
-                                color: "black",
+                                color: "white",
                                 fontSize: 20,
                                 padding: 10,
-                                backgroundColor: "white",
+                                backgroundColor: "black",
                             }}
                         >
                             Close
@@ -122,9 +131,7 @@ export default function VideoScreen() {
                     onEndReached={() => {
                         fetchMedia(galleryFiles.length, mediaType);
                     }}
-                    onLayout={() => {
-                        fetchMedia(galleryFiles.length, mediaType);
-                    }}
+                    onEndReachedThreshold={0.5}
                 />
             </View>
         </View>
@@ -145,16 +152,16 @@ const styles = StyleSheet.create({
     },
     heading: {
         color: "#007bff",
-        fontSize: 30,
-    
+        marginBottom: 20,
+        textAlign: "center",
+        fontSize: 24,
         fontWeight: "bold",
     },
     imageContainer: {
         flex: 1,
-        margin: 1,
+        margin: 3,
         aspectRatio: 1,
         borderRadius: 8,
         overflow: "hidden",
     },
-    image: {},
 });

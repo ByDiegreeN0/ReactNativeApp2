@@ -7,7 +7,9 @@ import VideoScreen from './src/screens/VideoScreen';
 
 export default function App() {
   return (
-    <VideoScreen></VideoScreen>
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
   );
 }
 
