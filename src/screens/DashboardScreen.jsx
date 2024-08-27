@@ -39,7 +39,7 @@ const Dashboard = () => {
             <Text style={styles.text}>Galería de Audios</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.box} onPress={() => alert('Cámara')}>
+          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Fotos')}>
             <Icon name="camera-alt" size={40} color="#fff" style={styles.icon} />
             <Text style={styles.text}>Cámara</Text>
           </TouchableOpacity>
