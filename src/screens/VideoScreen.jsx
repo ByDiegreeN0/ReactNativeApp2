@@ -1,6 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import {
-    Button,
     FlatList,
     Modal,
     Pressable,
@@ -65,51 +64,21 @@ export default function App() {
             <StatusBar style="auto" />
             <Text style={styles.heading}>Galería de Videos</Text>
 
-            <View
-                style={{
-                    flexDirection: "row",
-                    justifyContent: "space-around",
-                    width: "100%",
-                    padding: 10,
-                }}
-            >
+            <View style={styles.buttonContainer} />
 
-            </View>
-
-            {/* view full image in modal */}
             <Modal visible={currentImage !== ""} transparent={false}>
-                <View style={{ flex: 1, backgroundColor: "black" }}>
+                <View style={styles.modalContainer}>
                     <Pressable
-                        style={{
-                            position: "absolute",
-                            top: 40,
-                            zIndex: 1,
-                            flex: 1,
-                            alignSelf: "center",
-                        }}
+                        style={styles.closeButton}
                         title="Close"
                         onPress={() => setCurrentImage("")}
                     >
-                        <Text
-                            style={{
-                                color: "white",
-                                fontSize: 20,
-                                padding: 10,
-                                backgroundColor: "black",
-                            }}
-                        >
-                            Close
-                        </Text>
+                        <Text style={styles.closeText}>Close</Text>
                     </Pressable>
                     {mediaType === "video" ? (
                         <Video
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                            }}
-                            source={{
-                                uri: currentImage,
-                            }}
+                            style={styles.media}
+                            source={{ uri: currentImage }}
                             useNativeControls
                             resizeMode={ResizeMode.CONTAIN}
                             isLooping
@@ -117,7 +86,7 @@ export default function App() {
                     ) : (
                         <Image
                             source={{ uri: currentImage }}
-                            style={{ width: "100%", height: "100%" }}
+                            style={styles.media}
                         />
                     )}
                 </View>
@@ -144,6 +113,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginTop: "10%",
+        backgroundColor: "#003554", 
     },
     scrollContainer: {
         flex: 1,
@@ -151,7 +121,7 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     heading: {
-        color: "#A4133C",
+        color: "#00a6fb", 
         marginBottom: 20,
         textAlign: "center",
         fontSize: 24,
@@ -163,5 +133,33 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         borderRadius: 8,
         overflow: "hidden",
+        backgroundColor: "#006494", 
+    },
+    buttonContainer: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        width: "100%",
+        padding: 10,
+    },
+    modalContainer: {
+        flex: 1,
+        backgroundColor: "#051923", 
+    },
+    closeButton: {
+        position: "absolute",
+        top: 40,
+        zIndex: 1,
+        flex: 1,
+        alignSelf: "center",
+    },
+    closeText: {
+        color: "#fff",
+        fontSize: 20,
+        padding: 10,
+        backgroundColor: "#003554", 
+    },
+    media: {
+        width: "100%",
+        height: "100%",
     },
 });
