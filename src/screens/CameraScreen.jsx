@@ -1,16 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image, Button } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera, CameraType } from 'expo-camera/legacy';
 import * as MediaLibrary from 'expo-media-library';
-import { MaterialIcons } from '@expo/vector-icons';
-
+import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
 
 export default function TakeCameraScreen() {
-
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+  const [type, setType] = useState(CameraType.back);
   const [flash, setFlash] = useState(Camera.Constants.FlashMode.off);
   const cameraRef = useRef(null);
 
@@ -23,7 +21,7 @@ export default function TakeCameraScreen() {
   }, []);
 
   const takePicture = async () => {
-    if (cameraRef) {
+    if (cameraRef.current) {
       try {
         const data = await cameraRef.current.takePictureAsync();
         console.log(data);
@@ -51,7 +49,6 @@ export default function TakeCameraScreen() {
     return <Text>No access to camera</Text>;
   }
 
-
   return (
     <View style={styles.container}>
       {!image ? (
@@ -60,25 +57,38 @@ export default function TakeCameraScreen() {
           type={type}
           ref={cameraRef}
           flashMode={flash}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 30,
-            }}
-          >
-            <Button
-              title="Delantera o Posterior"
-              icon="retweet"
+        />
+      ) : (
+        <Image source={{ uri: image }} style={styles.camera} />
+      )}
+
+      <View style={styles.controls}>
+        {image ? (
+          <View style={styles.bottomControls}>
+            <TouchableOpacity style={styles.controlButton} onPress={() => setImage(null)}>
+              <Ionicons name="reload" size={24} color="#fff" />
+              <Text style={styles.controlText}>Re-take</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.controlButton} onPress={savePicture}>
+              <FontAwesome5 name="save" size={24} color="#fff" />
+              <Text style={styles.controlText}>Save</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.captureControls}>
+            <TouchableOpacity
+              style={styles.sideButton}
               onPress={() => {
                 setType(
                   type === CameraType.back ? CameraType.front : CameraType.back
                 );
               }}
-            />
-            <Button
-            title="Flash si/no"
+            >
+              <Ionicons name="camera-reverse" size={24} color="#fff" />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.sideButton}
               onPress={() =>
                 setFlash(
                   flash === Camera.Constants.FlashMode.off
@@ -86,33 +96,18 @@ export default function TakeCameraScreen() {
                     : Camera.Constants.FlashMode.off
                 )
               }
-              icon="flash"
-              color={flash === Camera.Constants.FlashMode.off ? 'gray' : '#fff'}
-            />
-          </View>
-        </Camera>
-      ) : (
-        <Image source={{ uri: image }} style={styles.camera} />
-      )}
+            >
+              <Ionicons
+                name={flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash"} 
+                size={24}
+                color="#fff"
+              />
+            </TouchableOpacity>
 
-      <View style={styles.controls}>
-        {image ? (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 50,
-            }}
-          >
-            <Button
-              title="Re-take"
-              onPress={() => setImage(null)}
-              icon="retweet"
-            />
-            <Button title="Save" onPress={savePicture} icon="check" />
+            <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+              <Ionicons name="camera" size={30} color="#fff" />
+            </TouchableOpacity>
           </View>
-        ) : (
-          <Button title="Take a picture" onPress={takePicture} icon="camera" />
         )}
       </View>
     </View>
@@ -125,29 +120,78 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
     backgroundColor: '#000',
-    padding: 8,
+  },
+  camera: {
+    flex: 1,
+    borderRadius: 0,
   },
   controls: {
-    flex: 0.5,
+    position: 'absolute',
+    bottom: 20,
+    left: 0,
+    right: 0,
+    alignItems: 'center',
   },
-  button: {
-    height: 40,
-    borderRadius: 6,
+  captureControls: {
+    flexDirection: 'row',
+    padding: 20,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    paddingHorizontal: 20,
+  },
+  sideButton: {
+    padding: 15,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  captureButton: {
+    padding: 20,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 3,
+  },
+  bottomControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+    paddingHorizontal: 20,
+    marginBottom: 20,
+  },
+  controlButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    borderRadius: 30,
+    padding: 12,
+    margin: 5,
+    shadowColor: '#000',  
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 3,
   },
-  text: {
-    fontWeight: 'bold',
+  controlText: {
+    color: '#fff',
     fontSize: 16,
-    color: '#E9730F',
     marginLeft: 10,
-  },
-  camera: {
-    flex: 5,
-    borderRadius: 20,
-  },
-  topControls: {
-    flex: 1,
   },
 });
