@@ -3,7 +3,6 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; 
 import { useNavigation } from '@react-navigation/native';
 
-
 const Dashboard = () => {
 
   const navigation = useNavigation();
@@ -14,16 +13,13 @@ const Dashboard = () => {
 
   return (
     <View style={styles.container}>
-      {/* Encabezado de perfil de usuario */}
       <TouchableOpacity style={styles.header} onPress={handleHeaderPress}>
         <Icon name="person" size={30} color="#fff" />
         <Text style={styles.headerText}>Perfil de Usuario</Text>
       </TouchableOpacity>
 
-      {/* Separación entre el header y los botones */}
       <View style={styles.separator} />
 
-      {/* Contenedor para las filas de botones */}
       <View style={styles.buttonWrapper}>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Videos')}>
@@ -43,15 +39,14 @@ const Dashboard = () => {
             <Text style={styles.text}>Galería de Audios</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.box} onPress={() => alert('Otra Seccion')}>
-            <Icon name="apps" size={40} color="#fff" style={styles.icon} />
-            <Text style={styles.text}>Otra Sección</Text>
+          <TouchableOpacity style={styles.box} onPress={() => alert('Cámara')}>
+            <Icon name="camera-alt" size={40} color="#fff" style={styles.icon} />
+            <Text style={styles.text}>Cámara</Text>
           </TouchableOpacity>
         </View>
       </View>
 
-      {/* Botón de Cerrar Sesión */}
-      <TouchableOpacity style={styles.logoutButton}  onPress={() => navigation.navigate('Login')}>
+      <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.navigate('Login')}>
         <Text style={styles.logoutText}>Cerrar Sesión</Text>
       </TouchableOpacity>
     </View>
@@ -61,18 +56,18 @@ const Dashboard = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#003554', // Color de fondo de la paleta
     padding: 10,
-    justifyContent: 'space-between', // Espacio entre el contenido y el botón de cerrar sesión
+    backgroundColor: '#003554',
+    justifyContent: 'space-between',
   },
   header: {
     height: 60,
-    backgroundColor: '#0582ca', // Color del header
-    justifyContent: 'center', // Centra verticalmente el contenido del header
+    backgroundColor: '#0582ca',
+    justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
     borderRadius: 5,
-    elevation: 3, // Sombra para el encabezado
+    elevation: 3,
     marginBottom: 10,
     paddingHorizontal: 15,
   },
@@ -82,12 +77,12 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   separator: {
-    height: 20, 
+    height: 20,
   },
   buttonWrapper: {
     flex: 1,
-    justifyContent: 'center', // Centra verticalmente los botones
-    alignItems: 'center', // Centra horizontalmente los botones
+    justifyContent: 'center',
+    alignItems: 'center',
     width: '100%',
   },
   buttonContainer: {
@@ -96,18 +91,18 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   box: {
-    width: 160, // Ancho fijo para los botones
-    height: 140, // Altura mayor para dar espacio a los iconos y texto
-    backgroundColor: '#00a6fb', // Color de los botones
+    width: 160,
+    height: 140,
+    backgroundColor: '#006494',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
-    flexDirection: 'column', // Alinea icono y texto verticalmente
+    flexDirection: 'column',
     margin: 5,
     padding: 10,
   },
   icon: {
-    marginBottom: 10, // Espacio entre el icono y el texto
+    marginBottom: 10,
   },
   text: {
     color: '#fff',
@@ -115,7 +110,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   logoutButton: {
-    backgroundColor: '#051923', // Color del botón de cerrar sesión
+    backgroundColor: '#00a6fb',
     paddingVertical: 15,
     alignItems: 'center',
     borderRadius: 5,

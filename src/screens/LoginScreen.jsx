@@ -28,7 +28,7 @@ const FormGroup = ({ id, label, control, rules, errors, secureTextEntry = false 
 
 const Signin = () => {
   const { control, handleSubmit, formState: { errors } } = useForm();
-  const [loginError, setLoginError] = useState(''); // Estado para el error de login
+  const [loginError, setLoginError] = useState('');
   const navigation = useNavigation();
 
   const onSubmit = async (data) => {
@@ -37,14 +37,14 @@ const Signin = () => {
       const storedPassword = await AsyncStorage.getItem('userPassword');
 
       if (data.email === storedEmail && data.password === storedPassword) {
-        setLoginError(''); // Limpiar error si es correcto
+        setLoginError('');
         navigation.navigate('Profile');
       } else {
-        setLoginError('Correo electrónico o contraseña incorrectos'); // Establecer mensaje de error
+        setLoginError('Correo electrónico o contraseña incorrectos');
       }
     } catch (error) {
       console.error('Error retrieving data:', error);
-      setLoginError('Hubo un problema al intentar iniciar sesión'); // Establecer mensaje de error general
+      setLoginError('Hubo un problema al intentar iniciar sesión');
     }
   };
 
@@ -80,7 +80,6 @@ const Signin = () => {
           secureTextEntry
         />
         
-        {/* Mostrar mensaje de error de login si existe */}
         {loginError ? <Text style={styles.errorMessage}>{loginError}</Text> : null}
 
         <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
@@ -98,19 +97,19 @@ const Signin = () => {
   );
 };
 
-// Estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#E5E5E5',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    color: '#333',
   },
   formContainer: {
     marginTop: 24,
@@ -122,39 +121,41 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#333',
   },
   input: {
     height: 40,
-    borderColor: '#ccc',
+    borderColor: '#DDDDDD',
     borderWidth: 1,
     borderRadius: 4,
     paddingHorizontal: 8,
+    backgroundColor: '#FFFFFF',
   },
   inputError: {
-    borderColor: 'red',
+    borderColor: '#FF6F6F',
   },
   errorMessage: {
-    color: 'red',
+    color: '#FF6F6F',
     fontSize: 12,
     marginTop: 4,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#007BFF',
     padding: 12,
     borderRadius: 4,
     alignItems: 'center',
     marginVertical: 8,
   },
   buttonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 16,
   },
   redirect: {
     marginTop: 16,
   },
   textRedirect: {
-    textAlign: "center",
-    color: "#007bff",
+    textAlign: 'center',
+    color: '#007BFF',
     margin: 10,
   },
 });

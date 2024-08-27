@@ -119,26 +119,26 @@ const Signup = () => {
           style={styles.redirect}
           onPress={() => navigation.navigate('Login')}
         >
-          <Text style={styles.textRedirect}>Ya Tienes Cuenta?</Text>
+          <Text style={styles.textRedirect}>¿Ya tienes cuenta?</Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
 
-// Estilos
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#F9F9F9',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,
+    color: '#333',
   },
   stepContainer: {
     marginBottom: 16,
@@ -150,37 +150,40 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#333',
   },
   input: {
     height: 40,
-    borderColor: '#ccc',
+    borderColor: '#DDDDDD',
     borderWidth: 1,
     borderRadius: 4,
     paddingHorizontal: 8,
+    backgroundColor: '#FFFFFF',
   },
   inputError: {
-    borderColor: 'red',
+    borderColor: '#FF6F6F',
   },
   errorMessage: {
-    color: 'red',
+    color: '#FF6F6F',
     fontSize: 12,
   },
   button: {
-    backgroundColor: '#007bff',
+    backgroundColor: '#007BFF',
     padding: 12,
     borderRadius: 4,
     alignItems: 'center',
+    marginVertical: 8,
   },
   buttonText: {
-    color: '#fff',
+    color: '#FFFFFF',
     fontSize: 16,
   },
   redirect: {
     marginTop: 16,
   },
   textRedirect: {
-    textAlign: "center",
-    color: "#007bff",
+    textAlign: 'center',
+    color: '#007BFF',
     margin: 10,
   },
 });

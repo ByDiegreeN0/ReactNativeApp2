@@ -1,10 +1,8 @@
 import { StatusBar } from "expo-status-bar";
 import {
-    Button,
     FlatList,
     Modal,
     Pressable,
-    ScrollView,
     StyleSheet,
     Text,
     View,
@@ -54,7 +52,7 @@ export default function VideoScreen() {
     return (
         <View style={styles.container}>
             <StatusBar style="auto" />
-            <Text style={styles.heading}>Galeria de Imagenes</Text>
+            <Text style={styles.heading}>Galería de Imágenes</Text>
 
             <View
                 style={{
@@ -63,44 +61,21 @@ export default function VideoScreen() {
                     width: "100%",
                     padding: 10,
                 }}
-            >
-                
-            </View>
+            />
 
-            {/* view full image in modal */}
             <Modal visible={currentImage !== ""} transparent={false}>
-                <View style={{ flex: 1, backgroundColor: 0 }}>
+                <View style={styles.modalContainer}>
                     <Pressable
-                        style={{
-                            position: "absolute",
-                            top: 40,
-                            zIndex: 1,
-                            flex: 1,
-                            alignSelf: "center",
-                        }}
+                        style={styles.closeButton}
                         title="Close"
                         onPress={() => setCurrentImage("")}
                     >
-                        <Text
-                            style={{
-                                color: "black",
-                                fontSize: 20,
-                                padding: 10,
-                                backgroundColor: "white",
-                            }}
-                        >
-                            Close
-                        </Text>
+                        <Text style={styles.closeText}>Close</Text>
                     </Pressable>
                     {mediaType === "video" ? (
                         <Video
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                            }}
-                            source={{
-                                uri: currentImage,
-                            }}
+                            style={styles.media}
+                            source={{ uri: currentImage }}
                             useNativeControls
                             resizeMode={ResizeMode.CONTAIN}
                             isLooping
@@ -108,7 +83,7 @@ export default function VideoScreen() {
                     ) : (
                         <Image
                             source={{ uri: currentImage }}
-                            style={{ width: "100%", height: "100%" }}
+                            style={styles.media}
                         />
                     )}
                 </View>
@@ -137,6 +112,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         marginTop: "10%",
+        backgroundColor: "#003554",
     },
     scrollContainer: {
         flex: 1,
@@ -144,18 +120,37 @@ const styles = StyleSheet.create({
         width: "100%",
     },
     heading: {
-        color: "#007bff",
+        color: "#00a6fb",
         fontSize: 30,
-    
         fontWeight: "bold",
     },
-
     imageContainer: {
         flex: 1,
         margin: 3,
         aspectRatio: 1,
         borderRadius: 8,
         overflow: "hidden",
+        backgroundColor: "#006494",
     },
-    image: {},
+    modalContainer: {
+        flex: 1,
+        backgroundColor: "#051923",
+    },
+    closeButton: {
+        position: "absolute",
+        top: 40,
+        zIndex: 1,
+        flex: 1,
+        alignSelf: "center",
+    },
+    closeText: {
+        color: "#fff",
+        fontSize: 20,
+        padding: 10,
+        backgroundColor: "#003554",
+    },
+    media: {
+        width: "100%",
+        height: "100%",
+    },
 });
