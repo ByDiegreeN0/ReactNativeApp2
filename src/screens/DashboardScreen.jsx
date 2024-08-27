@@ -43,7 +43,7 @@ const Dashboard = () => {
             <Text style={styles.text}>Galería de Audios</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.box} onPress={() => alert('Otra Seccion')}>
+          <TouchableOpacity style={styles.box} onPress={() => navigation.navigate('Camara')}>
             <Icon name="apps" size={40} color="#fff" style={styles.icon} />
             <Text style={styles.text}>Otra Sección</Text>
           </TouchableOpacity>
