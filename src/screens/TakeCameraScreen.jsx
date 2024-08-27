@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity, Image, Button } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera, CameraType } from 'expo-camera/legacy';
 import * as MediaLibrary from 'expo-media-library';
 import { MaterialIcons } from '@expo/vector-icons';
 
-
 export default function TakeCameraScreen() {
-
   const [hasCameraPermission, setHasCameraPermission] = useState(null);
   const [image, setImage] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
@@ -51,7 +49,6 @@ export default function TakeCameraScreen() {
     return <Text>No access to camera</Text>;
   }
 
-
   return (
     <View style={styles.container}>
       {!image ? (
@@ -60,25 +57,40 @@ export default function TakeCameraScreen() {
           type={type}
           ref={cameraRef}
           flashMode={flash}
-        >
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 30,
-            }}
-          >
-            <Button
-              title="Delantera o Posterior"
-              icon="retweet"
+        />
+      ) : (
+        <Image source={{ uri: image }} style={styles.camera} />
+      )}
+
+      <View style={styles.controls}>
+        {image ? (
+          <View style={styles.bottomControls}>
+            <TouchableOpacity style={styles.controlButton} onPress={() => setImage(null)}>
+              <MaterialIcons name="replay" size={24} color="#fff" />
+              <Text style={styles.controlText}>Re-take</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.controlButton} onPress={savePicture}>
+              <MaterialIcons name="save" size={24} color="#fff" />
+              <Text style={styles.controlText}>Save</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <View style={styles.captureControls}>
+            <TouchableOpacity
+              style={styles.sideButton}
               onPress={() => {
                 setType(
                   type === CameraType.back ? CameraType.front : CameraType.back
                 );
               }}
-            />
-            <Button
-            title="Flash si/no"
+            >
+              <MaterialIcons name="flip-camera-android" size={24} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.captureButton} onPress={takePicture}>
+              <MaterialIcons name="camera" size={30} color="#fff" />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.sideButton}
               onPress={() =>
                 setFlash(
                   flash === Camera.Constants.FlashMode.off
@@ -86,33 +98,14 @@ export default function TakeCameraScreen() {
                     : Camera.Constants.FlashMode.off
                 )
               }
-              icon="flash"
-              color={flash === Camera.Constants.FlashMode.off ? 'gray' : '#fff'}
-            />
+            >
+              <MaterialIcons
+                name={flash === Camera.Constants.FlashMode.off ? "flash-off" : "flash-on"}
+                size={24}
+                color="#fff"
+              />
+            </TouchableOpacity>
           </View>
-        </Camera>
-      ) : (
-        <Image source={{ uri: image }} style={styles.camera} />
-      )}
-
-      <View style={styles.controls}>
-        {image ? (
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              paddingHorizontal: 50,
-            }}
-          >
-            <Button
-              title="Re-take"
-              onPress={() => setImage(null)}
-              icon="retweet"
-            />
-            <Button title="Save" onPress={savePicture} icon="check" />
-          </View>
-        ) : (
-          <Button title="Take a picture" onPress={takePicture} icon="camera" />
         )}
       </View>
     </View>
@@ -128,26 +121,72 @@ const styles = StyleSheet.create({
     padding: 8,
   },
   controls: {
-    flex: 0.5,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  button: {
-    height: 40,
-    borderRadius: 6,
+  camera: {
+    flex: 4,
+    borderRadius: 20,
+  },
+  captureControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '80%',
+  },
+  sideButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    padding: 10,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  captureButton: {
+    backgroundColor: '#E9730F',
+    padding: 20,
+    borderRadius: 50,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
+  },
+  bottomControls: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginVertical: 20,
+  },
+  controlButton: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 30,
+    padding: 10,
+    margin: 5,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    elevation: 5,
   },
-  text: {
-    fontWeight: 'bold',
+  controlText: {
+    color: '#fff',
     fontSize: 16,
-    color: '#E9730F',
     marginLeft: 10,
-  },
-  camera: {
-    flex: 5,
-    borderRadius: 20,
-  },
-  topControls: {
-    flex: 1,
   },
 });
